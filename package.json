@@ -4,7 +4,11 @@
   "description": "Spelling Game",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve",
+    "watch": "webpack --watch",
+    "start-watch": "npm run start && npm run watch"
   },
   "author": "",
   "license": "ISC",
