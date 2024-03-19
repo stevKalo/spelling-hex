@@ -6,6 +6,36 @@ import './styles.css';
 //
 
 const inputQueue = document.querySelector('#input-queue');
+const deleteBtn = document.querySelector('#delete');
+const shuffleBtn = document.querySelector('#shuffle');
+const submitBtn = document.querySelector('#submit');
+
+// Button Event Listeners
+deleteBtn.addEventListener('click', () => {
+  inputQueue.textContent = inputQueue.textContent.slice(
+    0,
+    inputQueue.textContent.length - 1
+  );
+});
+
+shuffleBtn.addEventListener('click', () => {
+  // clear text content of all hexes except for hex4
+  // shuffle letterArray
+  // reassign letters to hexes
+});
+
+submitBtn.addEventListener('click', () => {
+  if (inputQueue.textContent.includes(centerLetter)) {
+    // make API call to dictionary API
+    // if resolved
+    // add points equal to length to the score
+    // if error
+    // flash "Not a Word"
+  } else {
+    // flash "Missing Center Letter"
+  }
+  inputQueue.textContent = '';
+});
 
 // LETTER ARRAY
 const alphabetArray = [
@@ -38,6 +68,8 @@ const alphabetArray = [
 ];
 
 const letterArray = [];
+const centerLetter = '';
+
 // HEX OBJECT ARRAY
 const hexes = [
   {
@@ -97,7 +129,7 @@ function assignLetters() {
 // ** Need to refactor assign letters, should choose letters first to ensure there are at least 2 vowels before assigning to textContent
 
 // function to give on click functionality to hexes
-function activateLetters() {
+function activateHexes() {
   for (let hex of hexes) {
     hex.shape.addEventListener('click', () => {
       console.log(hex.shape.textContent);
@@ -108,5 +140,5 @@ function activateLetters() {
 
 window.onload = () => {
   assignLetters();
-  activateLetters();
+  activateHexes();
 };
