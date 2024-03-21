@@ -25,7 +25,10 @@ shuffleBtn.addEventListener('click', () => {
 });
 
 submitBtn.addEventListener('click', () => {
-  if (inputQueue.textContent.includes(centerLetter)) {
+  if (inputQueue.textContent.length <= 3) {
+    // tell user not big enough
+  } else if (inputQueue.textContent.includes(centerLetter)) {
+    console.log(inputQueue.textContent);
     // make API call to dictionary API
     // if resolved
     // add points equal to length to the score
@@ -67,8 +70,7 @@ const alphabetArray = [
   { letter: 'Z', vowel: false },
 ];
 
-const letterArray = [];
-const centerLetter = '';
+let letterArray = [];
 
 // HEX OBJECT ARRAY
 const hexes = [
@@ -111,18 +113,27 @@ const hexes = [
 
 // function to assign random letters to each hex
 function assignLetters() {
-  const newList = alphabetArray;
+  const newList = [...alphabetArray]; // Make a copy of alphabetArray
   function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
   }
-  for (let hex of hexes) {
-    const index = getRandomIntInclusive(0, newList.length - 1);
-    const letter = newList[index].letter;
-    hex.shape.textContent = letter;
-    letterArray.push(letter);
-    newList.splice(index, 1);
+  function checkVowels(array) {
+    return array.filter((item) => item.vowel === true).length >= 2;
+  }
+  function chooseLetters() {
+    for (let hex of hexes) {
+      const index = getRandomIntInclusive(0, newList.length - 1);
+      const letter = newList[index];
+      hex.shape.textContent = letter.letter;
+      letterArray.push(letter);
+      newList.splice(index, 1);
+    }
+  }
+  while (!checkVowels(letterArray)) {
+    letterArray = [];
+    chooseLetters();
   }
 }
 
@@ -132,7 +143,6 @@ function assignLetters() {
 function activateHexes() {
   for (let hex of hexes) {
     hex.shape.addEventListener('click', () => {
-      console.log(hex.shape.textContent);
       inputQueue.textContent += hex.shape.textContent;
     });
   }
