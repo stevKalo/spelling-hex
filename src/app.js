@@ -1,3 +1,4 @@
+import { length } from 'file-loader';
 import './styles.css';
 const words = require('./wordsArray.js');
 
@@ -20,9 +21,24 @@ deleteBtn.addEventListener('click', () => {
 });
 
 shuffleBtn.addEventListener('click', () => {
-  // clear text content of all hexes except for hex4
-  // shuffle letterArray
-  // reassign letters to hexes
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  let shuffledLetters = [];
+  const outerHexes = hexes.filter((item) => !item.center);
+  for (let hex of outerHexes) {
+    shuffledLetters.push(hex.shape.textContent);
+    hex.shape.textContent = '';
+  }
+  shuffledLetters = shuffleArray(shuffledLetters);
+  console.log(shuffledLetters);
+  for (let i = 0; i < outerHexes.length; i++) {
+    outerHexes[i].shape.textContent = shuffledLetters[i];
+  }
 });
 
 submitBtn.addEventListener('click', () => {
@@ -72,6 +88,7 @@ const alphabetArray = [
 ];
 
 let letterArray = [];
+let centerLetter;
 
 // HEX OBJECT ARRAY
 const hexes = [
@@ -138,8 +155,6 @@ function assignLetters() {
   }
 }
 
-// ** Need to refactor assign letters, should choose letters first to ensure there are at least 2 vowels before assigning to textContent
-
 // function to give on click functionality to hexes
 function activateHexes() {
   for (let hex of hexes) {
@@ -152,5 +167,5 @@ function activateHexes() {
 window.onload = () => {
   assignLetters();
   activateHexes();
-  console.log(words);
+  centerLetter = hexes[3].shape.textContent;
 };

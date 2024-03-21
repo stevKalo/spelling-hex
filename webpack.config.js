@@ -35,7 +35,6 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
       inject: 'head',
-      scriptLoading: 'defer',
     }),
   ],
   devServer: {
@@ -46,5 +45,11 @@ module.exports = {
     port: 9000,
     open: true,
     hot: true,
+  },
+  resolve: {
+    fallback: {
+      crypto: false,
+      path: false,
+    },
   },
 };
