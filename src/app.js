@@ -1,4 +1,5 @@
 import './styles.css';
+const words = require('./wordsArray.js');
 
 // new game function
 // for each hex
@@ -151,4 +152,5 @@ function activateHexes() {
 window.onload = () => {
   assignLetters();
   activateHexes();
+  console.log(words);
 };
