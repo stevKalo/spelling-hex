@@ -2,17 +2,13 @@ import { length } from 'file-loader';
 import './styles.css';
 const words = require('./wordsArray.js');
 
-// new game function
-// for each hex
-// pick a random letter of alphabet, assign letters
-//
-
+// GLOBALS
 const inputQueue = document.querySelector('#input-queue');
 const deleteBtn = document.querySelector('#delete');
 const shuffleBtn = document.querySelector('#shuffle');
 const submitBtn = document.querySelector('#submit');
 
-// Button Event Listeners
+// BUTTON EVENT LISTENERS
 deleteBtn.addEventListener('click', () => {
   inputQueue.textContent = inputQueue.textContent.slice(
     0,
@@ -57,7 +53,7 @@ submitBtn.addEventListener('click', () => {
   inputQueue.textContent = '';
 });
 
-// LETTER ARRAY
+// LETTER ARRAYS & CENTER LETTER
 const alphabetArray = [
   { letter: 'A', vowel: true },
   { letter: 'B', vowel: false },
@@ -86,11 +82,10 @@ const alphabetArray = [
   { letter: 'Y', vowel: true },
   { letter: 'Z', vowel: false },
 ];
-
 let letterArray = [];
 let centerLetter;
 
-// HEX OBJECT ARRAY
+// HEX ARRAY
 const hexes = [
   {
     name: 'Hex1',
