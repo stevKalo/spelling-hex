@@ -83,6 +83,7 @@ const alphabetArray = [
   { letter: 'Z', vowel: false },
 ];
 let letterArray = [];
+let forbiddenArray = [];
 let centerLetter;
 
 // HEX ARRAY
@@ -124,6 +125,24 @@ const hexes = [
   },
 ];
 
+// WORD ARRAYS
+const wordsArray = [];
+
+//function to only take words that only include letters in the letter array and always include the center letter
+function buildDictionary() {
+  // filter words for words that have anything besides letters in letterArray
+  const centerFiltered = words.filter((word) => word.includes(centerLetter));
+  const letterFiltered = centerFiltered.filter((word) => {
+    for (let letter of word) {
+      if (forbiddenArray.includes(letter)) {
+        return false;
+      }
+    }
+    return true;
+  });
+  // filter
+}
+
 // function to assign random letters to each hex
 function assignLetters() {
   const newList = [...alphabetArray]; // Make a copy of alphabetArray
@@ -150,6 +169,15 @@ function assignLetters() {
   }
 }
 
+// function to collect unused letters
+function assignForbidden() {
+  const newList = [...alphabetArray];
+  const forbiddenList = newList.filter((letter) => {
+    return !letterArray.includes(letter);
+  });
+  forbiddenArray.push(...forbiddenList);
+}
+
 // function to give on click functionality to hexes
 function activateHexes() {
   for (let hex of hexes) {
@@ -162,5 +190,6 @@ function activateHexes() {
 window.onload = () => {
   assignLetters();
   activateHexes();
+  assignForbidden();
   centerLetter = hexes[3].shape.textContent;
 };
