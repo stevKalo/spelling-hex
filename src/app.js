@@ -37,8 +37,10 @@ shuffleBtn.addEventListener('click', () => {
 });
 
 submitBtn.addEventListener('click', () => {
+  const input = inputQueue.textContent;
   if (inputQueue.textContent.length <= 3) {
     // tell user not big enough
+    console.log('Not big enough!');
   } else if (inputQueue.textContent.includes(centerLetter)) {
     console.log(inputQueue.textContent);
     // make API call to dictionary API
@@ -130,23 +132,19 @@ const wordsArray = [];
 //function to build array of accepted words
 function buildDictionary() {
   // filter words to have center letter
-  console.log('Master Words', words);
   const centerFiltered = words.filter((word) => {
     return word.includes(centerLetter);
   });
-  console.log('Filtered by Center', centerFiltered);
   // filter centerFiltered to not have any of the forbidden letters
   const letterFiltered = centerFiltered.filter((word) => {
     for (let letter of word) {
-      if (forbiddenArray.includes(letter.toUpperCase())) {
+      if (forbiddenArray.includes(letter)) {
         // Convert letter to uppercase for comparison
         return false;
       }
     }
     return true;
   });
-  console.log('Filtered by Letters', letterFiltered);
-  console.log('Words Array', wordsArray);
   wordsArray.push(...letterFiltered);
 }
 
@@ -184,9 +182,11 @@ function assignCenter() {
 // function to collect unused letters
 function assignForbidden() {
   const newList = [...alphabetArray];
-  const forbiddenList = newList.filter((letter) => {
-    return !letterArray.includes(letter);
-  });
+  const forbiddenList = newList
+    .filter((letter) => {
+      return !letterArray.includes(letter);
+    })
+    .map((item) => item.letter);
   forbiddenArray.push(...forbiddenList);
 }
 
