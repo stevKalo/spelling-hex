@@ -7,52 +7,8 @@ const inputQueue = document.querySelector('#input-queue');
 const deleteBtn = document.querySelector('#delete');
 const shuffleBtn = document.querySelector('#shuffle');
 const submitBtn = document.querySelector('#submit');
-
-// BUTTON EVENT LISTENERS
-deleteBtn.addEventListener('click', () => {
-  inputQueue.textContent = inputQueue.textContent.slice(
-    0,
-    inputQueue.textContent.length - 1
-  );
-});
-
-shuffleBtn.addEventListener('click', () => {
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-  let shuffledLetters = [];
-  const outerHexes = hexes.filter((item) => !item.center);
-  for (let hex of outerHexes) {
-    shuffledLetters.push(hex.shape.textContent);
-    hex.shape.textContent = '';
-  }
-  shuffledLetters = shuffleArray(shuffledLetters);
-  for (let i = 0; i < outerHexes.length; i++) {
-    outerHexes[i].shape.textContent = shuffledLetters[i];
-  }
-});
-
-submitBtn.addEventListener('click', () => {
-  const input = inputQueue.textContent;
-  if (inputQueue.textContent.length <= 3) {
-    // tell user not big enough
-    console.log('Not big enough!');
-  } else if (inputQueue.textContent.includes(centerLetter)) {
-    console.log(inputQueue.textContent);
-    // make API call to dictionary API
-    // if resolved
-    // add points equal to length to the score
-    // if error
-    // flash "Not a Word"
-  } else {
-    // flash "Missing Center Letter"
-  }
-  inputQueue.textContent = '';
-});
+let score = 0;
+const scoreDisplay = document.querySelector('#score-value');
 
 // LETTER ARRAYS & CENTER LETTER
 const alphabetArray = [
@@ -86,6 +42,9 @@ const alphabetArray = [
 let letterArray = [];
 let forbiddenArray = [];
 let centerLetter;
+
+// WORD ARRAY
+const wordsArray = [];
 
 // HEX ARRAY
 const hexes = [
@@ -125,9 +84,6 @@ const hexes = [
     center: false,
   },
 ];
-
-// WORD ARRAYS
-const wordsArray = [];
 
 //function to build array of accepted words
 function buildDictionary() {
@@ -177,6 +133,10 @@ function assignCenter() {
   centerLetter = hexes[3].shape.textContent;
 }
 
+function updateScore() {
+  scoreDisplay.textContent = score.toString();
+}
+
 // function to collect unused letters
 function assignForbidden() {
   const newList = [...alphabetArray];
@@ -197,17 +157,67 @@ function activateHexes() {
   }
 }
 
+// On Load Fucntions
 window.onload = () => {
-  function buildGame() {
+  function buildGame(num) {
     assignLetters();
     assignCenter();
     assignForbidden();
     buildDictionary();
-    if (wordsArray.length < 50) {
-      buildGame();
+    if (wordsArray.length < num) {
+      buildGame(num);
     } else {
       activateHexes();
     }
   }
-  buildGame();
+  buildGame(50);
+  console.log(forbiddenArray);
+  console.log(wordsArray);
 };
+
+// BUTTON EVENT LISTENERS
+deleteBtn.addEventListener('click', () => {
+  inputQueue.textContent = inputQueue.textContent.slice(
+    0,
+    inputQueue.textContent.length - 1
+  );
+});
+
+shuffleBtn.addEventListener('click', () => {
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  let shuffledLetters = [];
+  const outerHexes = hexes.filter((item) => !item.center);
+  for (let hex of outerHexes) {
+    shuffledLetters.push(hex.shape.textContent);
+    hex.shape.textContent = '';
+  }
+  shuffledLetters = shuffleArray(shuffledLetters);
+  for (let i = 0; i < outerHexes.length; i++) {
+    outerHexes[i].shape.textContent = shuffledLetters[i];
+  }
+});
+
+submitBtn.addEventListener('click', () => {
+  const input = inputQueue.textContent;
+  // check if wordsArray.includes(input)
+  if (wordsArray.includes(input)) {
+    console.log('Congrats!');
+    score++;
+    updateScore();
+  } else {
+    if (!input.length > 3) {
+      console.log('Too Short');
+    } else if (!input.includes(centerLetter)) {
+      console.log(`You forgot ${centerLetter}!`);
+    } else {
+      console.log('Not on the list');
+    }
+  }
+  inputQueue.textContent = '';
+});
