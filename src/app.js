@@ -31,7 +31,6 @@ shuffleBtn.addEventListener('click', () => {
     hex.shape.textContent = '';
   }
   shuffledLetters = shuffleArray(shuffledLetters);
-  console.log(shuffledLetters);
   for (let i = 0; i < outerHexes.length; i++) {
     outerHexes[i].shape.textContent = shuffledLetters[i];
   }
@@ -128,19 +127,27 @@ const hexes = [
 // WORD ARRAYS
 const wordsArray = [];
 
-//function to only take words that only include letters in the letter array and always include the center letter
+//function to build array of accepted words
 function buildDictionary() {
-  // filter words for words that have anything besides letters in letterArray
-  const centerFiltered = words.filter((word) => word.includes(centerLetter));
+  // filter words to have center letter
+  console.log('Master Words', words);
+  const centerFiltered = words.filter((word) => {
+    return word.includes(centerLetter);
+  });
+  console.log('Filtered by Center', centerFiltered);
+  // filter centerFiltered to not have any of the forbidden letters
   const letterFiltered = centerFiltered.filter((word) => {
     for (let letter of word) {
-      if (forbiddenArray.includes(letter)) {
+      if (forbiddenArray.includes(letter.toUpperCase())) {
+        // Convert letter to uppercase for comparison
         return false;
       }
     }
     return true;
   });
-  // filter
+  console.log('Filtered by Letters', letterFiltered);
+  console.log('Words Array', wordsArray);
+  wordsArray.push(...letterFiltered);
 }
 
 // function to assign random letters to each hex
@@ -169,6 +176,11 @@ function assignLetters() {
   }
 }
 
+// function to assign center letter
+function assignCenter() {
+  centerLetter = hexes[3].shape.textContent;
+}
+
 // function to collect unused letters
 function assignForbidden() {
   const newList = [...alphabetArray];
@@ -189,7 +201,8 @@ function activateHexes() {
 
 window.onload = () => {
   assignLetters();
+  assignCenter();
   activateHexes();
   assignForbidden();
-  centerLetter = hexes[3].shape.textContent;
+  buildDictionary();
 };
