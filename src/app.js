@@ -131,15 +131,13 @@ const wordsArray = [];
 
 //function to build array of accepted words
 function buildDictionary() {
-  // filter words to have center letter
-  const centerFiltered = words.filter((word) => {
-    return word.includes(centerLetter);
-  });
-  // filter centerFiltered to not have any of the forbidden letters
-  const letterFiltered = centerFiltered.filter((word) => {
+  const forbiddenSet = new Set(forbiddenArray);
+  const letterFiltered = words.filter((word) => {
+    if (!word.includes(centerLetter)) {
+      return false;
+    }
     for (let letter of word) {
-      if (forbiddenArray.includes(letter)) {
-        // Convert letter to uppercase for comparison
+      if (forbiddenSet.has(letter)) {
         return false;
       }
     }
@@ -200,9 +198,16 @@ function activateHexes() {
 }
 
 window.onload = () => {
-  assignLetters();
-  assignCenter();
-  activateHexes();
-  assignForbidden();
-  buildDictionary();
+  function buildGame() {
+    assignLetters();
+    assignCenter();
+    assignForbidden();
+    buildDictionary();
+    if (wordsArray.length < 50) {
+      buildGame();
+    } else {
+      activateHexes();
+    }
+  }
+  buildGame();
 };
