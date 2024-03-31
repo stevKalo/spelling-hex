@@ -44,7 +44,7 @@ let forbiddenArray = [];
 let centerLetter;
 
 // WORD ARRAY
-const wordsArray = [];
+let wordsArray = [];
 
 // HEX ARRAY
 const hexes = [
@@ -85,6 +85,57 @@ const hexes = [
   },
 ];
 
+// function to assign random letters to each hex
+function assignLetters() {
+  const newList = [...alphabetArray]; // Make a copy of alphabetArray
+  function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+  }
+  function checkVowels(array) {
+    return array.filter((item) => item.vowel === true).length >= 2;
+  }
+  function chooseLetters() {
+    for (let hex of hexes) {
+      const index = getRandomIntInclusive(0, newList.length - 1);
+      const letter = newList[index];
+      hex.shape.textContent = letter.letter;
+      letterArray = new Set([...letterArray, letter]);
+      newList.splice(index, 1);
+    }
+  }
+  while (!checkVowels([...letterArray])) {
+    letterArray = new Set([]);
+    chooseLetters();
+  }
+}
+
+// function to assign center letter
+function assignCenter() {
+  centerLetter = hexes[3].shape.textContent;
+}
+
+// function to collect unused letters
+function assignForbidden() {
+  const newList = [...alphabetArray];
+  const forbiddenList = newList
+    .filter((letter) => {
+      return ![...letterArray].includes(letter);
+    })
+    .map((item) => item.letter);
+  forbiddenArray.push(...forbiddenList);
+}
+
+// function to give on click functionality to hexes
+function activateHexes() {
+  for (let hex of hexes) {
+    hex.shape.addEventListener('click', () => {
+      inputQueue.textContent += hex.shape.textContent;
+    });
+  }
+}
+
 //function to build array of accepted words
 function buildDictionary() {
   const forbiddenSet = new Set(forbiddenArray);
@@ -102,59 +153,16 @@ function buildDictionary() {
   wordsArray.push(...letterFiltered);
 }
 
-// function to assign random letters to each hex
-function assignLetters() {
-  const newList = [...alphabetArray]; // Make a copy of alphabetArray
-  function getRandomIntInclusive(min, max) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
-  }
-  function checkVowels(array) {
-    return array.filter((item) => item.vowel === true).length >= 2;
-  }
-  function chooseLetters() {
-    for (let hex of hexes) {
-      const index = getRandomIntInclusive(0, newList.length - 1);
-      const letter = newList[index];
-      hex.shape.textContent = letter.letter;
-      letterArray.push(letter);
-      newList.splice(index, 1);
-    }
-  }
-  while (!checkVowels(letterArray)) {
-    letterArray = [];
-    chooseLetters();
-  }
+// functino to clear game objs for rebuild
+function clearGame() {
+  forbiddenArray = [];
+  letterArray = [];
+  wordsArray = [];
 }
 
-// function to assign center letter
-function assignCenter() {
-  centerLetter = hexes[3].shape.textContent;
-}
-
+// function to update score on correct answers
 function updateScore() {
   scoreDisplay.textContent = score.toString();
-}
-
-// function to collect unused letters
-function assignForbidden() {
-  const newList = [...alphabetArray];
-  const forbiddenList = newList
-    .filter((letter) => {
-      return !letterArray.includes(letter);
-    })
-    .map((item) => item.letter);
-  forbiddenArray.push(...forbiddenList);
-}
-
-// function to give on click functionality to hexes
-function activateHexes() {
-  for (let hex of hexes) {
-    hex.shape.addEventListener('click', () => {
-      inputQueue.textContent += hex.shape.textContent;
-    });
-  }
 }
 
 // On Load Fucntions
@@ -165,13 +173,13 @@ window.onload = () => {
     assignForbidden();
     buildDictionary();
     if (wordsArray.length < num) {
+      clearGame();
       buildGame(num);
     } else {
       activateHexes();
     }
   }
-  buildGame(50);
-  console.log(forbiddenArray);
+  buildGame(80);
   console.log(wordsArray);
 };
 
