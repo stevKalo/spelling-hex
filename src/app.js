@@ -9,6 +9,7 @@ const shuffleBtn = document.querySelector('#shuffle');
 const submitBtn = document.querySelector('#submit');
 let score = 0;
 const scoreDisplay = document.querySelector('#score-value');
+const messageBox = document.querySelector('.message-box');
 
 // LETTER ARRAYS & CENTER LETTER
 const alphabetArray = [
@@ -45,6 +46,7 @@ let centerLetter;
 
 // WORD ARRAY
 let wordsArray = [];
+const foundWords = [];
 
 // HEX ARRAY
 const hexes = [
@@ -165,6 +167,17 @@ function updateScore() {
   scoreDisplay.textContent = score.toString();
 }
 
+function printMessage(message) {
+  messageBox.textContent = message;
+  messageBox.classList.add('active');
+  setTimeout(() => {
+    messageBox.classList.remove('active');
+  }, 1000);
+  setTimeout(() => {
+    messageBox.textContent = '';
+  }, 1500);
+}
+
 // On Load Fucntions
 window.onload = () => {
   function buildGame(num) {
@@ -213,17 +226,25 @@ shuffleBtn.addEventListener('click', () => {
 
 submitBtn.addEventListener('click', () => {
   const input = inputQueue.textContent;
-  // check if wordsArray.includes(input)
-  if (wordsArray.includes(input)) {
-    console.log('Congrats!');
-    score++;
+  if (wordsArray.includes(input) && !foundWords.includes(input)) {
+    console.log('Correct!');
+    printMessage('Correct!');
+    if (input.length === 4) {
+      score += 1;
+    } else {
+      score += input.length;
+    }
+    foundWords.push(input);
     updateScore();
   } else {
-    if (!input.length > 3) {
+    if (input.length < 4) {
+      printMessage('Too Short!');
       console.log('Too Short');
     } else if (!input.includes(centerLetter)) {
+      printMessage(`You forgot ${centerLetter}!`);
       console.log(`You forgot ${centerLetter}!`);
     } else {
+      printMessage('Not on the List!');
       console.log('Not on the list');
     }
   }
