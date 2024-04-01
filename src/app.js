@@ -87,7 +87,6 @@ const hexes = [
 
 // function to assign random letters to each hex
 function assignLetters() {
-  const newList = [...alphabetArray]; // Make a copy of alphabetArray
   function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
@@ -97,6 +96,7 @@ function assignLetters() {
     return array.filter((item) => item.vowel === true).length >= 2;
   }
   function chooseLetters() {
+    const newList = [...alphabetArray]; // Make a copy of alphabetArray
     for (let hex of hexes) {
       const index = getRandomIntInclusive(0, newList.length - 1);
       const letter = newList[index];
@@ -106,7 +106,7 @@ function assignLetters() {
     }
   }
   while (!checkVowels([...letterArray])) {
-    letterArray = new Set([]);
+    letterArray = new Set();
     chooseLetters();
   }
 }
