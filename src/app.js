@@ -3,6 +3,7 @@ import './styles.css';
 const words = require('./wordsArray.js');
 
 // GLOBALS
+const newGameBtn = document.querySelector('.new-game');
 const inputQueue = document.querySelector('#input-queue');
 const deleteBtn = document.querySelector('#delete');
 const shuffleBtn = document.querySelector('#shuffle');
@@ -178,25 +179,33 @@ function printMessage(message) {
   }, 1500);
 }
 
+// New Game Function
+function buildGame(num) {
+  assignLetters();
+  assignCenter();
+  assignForbidden();
+  buildDictionary();
+  if (wordsArray.length < num) {
+    clearGame();
+    buildGame(num);
+  } else {
+    activateHexes();
+  }
+}
+
 // On Load Fucntions
 window.onload = () => {
-  function buildGame(num) {
-    assignLetters();
-    assignCenter();
-    assignForbidden();
-    buildDictionary();
-    if (wordsArray.length < num) {
-      clearGame();
-      buildGame(num);
-    } else {
-      activateHexes();
-    }
-  }
   buildGame(80);
   console.log(wordsArray);
 };
 
 // BUTTON EVENT LISTENERS
+newGameBtn.addEventListener('click', () => {
+  clearGame();
+  buildGame(80);
+  console.log(wordsArray);
+});
+
 deleteBtn.addEventListener('click', () => {
   inputQueue.textContent = inputQueue.textContent.slice(
     0,
