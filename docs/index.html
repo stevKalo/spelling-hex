@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <title>Spelling Hex</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <div class="content">
+      <div class="navMenu">
+        <button class="new-game">New Game</button>
+        <button class="theme-switch">PlaceHolder</button>
+      </div>
+      <div class="score-container">
+        <div id="score-value">0</div>
+        <div id="past-words"></div>
+      </div>
+      <div class="message-box"></div>
+      <div id="input-container">
+        <span id="input-queue"></span><span id="input-caret">|</span>
+      </div>
+      <div id="hex-container">
+        <button class="bubble" id="hex1"></button>
+        <button class="bubble" id="hex2"></button>
+        <button class="bubble" id="hex3"></button>
+        <button class="bubble" id="hex4"></button>
+        <button class="bubble" id="hex5"></button>
+        <button class="bubble" id="hex6"></button>
+        <button class="bubble" id="hex7"></button>
+      </div>
+      <div class="controls-container">
+        <button id="delete">
+          <span class="material-symbols-outlined">Backspace</span>
+        </button>
+        <button id="shuffle">
+          <span class="material-symbols-outlined">Autorenew</span>
+        </button>
+        <button id="submit">
+          <span class="material-symbols-outlined">check_circle</span>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

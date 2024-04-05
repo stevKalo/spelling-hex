@@ -13,4 +13,3 @@ Built using vanilla JavaScript and a Wordlist
 - Implement Previous Word List
   - Should give preview of most recent accepted words
   - Should have functinoality to show all previous words
-- Implement scoring system based on length of word
