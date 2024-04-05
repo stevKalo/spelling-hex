@@ -11,6 +11,7 @@ const submitBtn = document.querySelector('#submit');
 let score = 0;
 const scoreDisplay = document.querySelector('#score-value');
 const messageBox = document.querySelector('.message-box');
+const foundWords = document.querySelector('#found-words');
 
 // LETTER ARRAYS & CENTER LETTER
 const alphabetArray = [
@@ -47,7 +48,11 @@ let centerLetter;
 
 // WORD ARRAY
 let wordsArray = [];
-const foundWords = [];
+const foundArray = [];
+
+function updateFoundWords() {
+  foundWords.textContent = foundArray.join(', ');
+}
 
 // HEX ARRAY
 const hexes = [
@@ -235,7 +240,12 @@ shuffleBtn.addEventListener('click', () => {
 
 submitBtn.addEventListener('click', () => {
   const input = inputQueue.textContent;
-  if (wordsArray.includes(input) && !foundWords.includes(input)) {
+  if (wordsArray.includes(input) && !foundArray.includes(input)) {
+    // if input has all of letters in lettersArray
+    if ('crazy thing') {
+      console.log('Spangram');
+      printMessage('Spangram!');
+    }
     console.log('Correct!');
     printMessage('Correct!');
     if (input.length === 4) {
@@ -243,8 +253,12 @@ submitBtn.addEventListener('click', () => {
     } else {
       score += input.length;
     }
-    foundWords.push(input);
+    foundArray.push(input);
+    updateFoundWords();
     updateScore();
+  } else if (foundArray.includes(input)) {
+    console.log('Already Found!');
+    printMessage('Already Found!');
   } else {
     if (input.length < 4) {
       printMessage('Too Short!');
