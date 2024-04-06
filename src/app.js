@@ -192,6 +192,9 @@ function clearGame() {
   letterArray = [];
   wordsArray = [];
   foundArray = [];
+  while (inputQueue.firstChild) {
+    inputQueue.removeChild(inputQueue.firstChild);
+  }
 }
 
 function printMessage(message) {
