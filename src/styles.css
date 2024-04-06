@@ -10,7 +10,6 @@
   margin: 0;
   padding: 0;
   font: inherit;
-  /* border: red solid 1px; */
 }
 
 ul,
@@ -73,12 +72,11 @@ img {
   height: 100vh;
   width: 100vw;
   margin: 0;
-  border: red solid 1px;
 }
 
-.content > div {
+/* .content > div {
   border: red solid 1px;
-}
+} */
 
 .navMenu {
   border-bottom: var(--accent) 1.5px solid;
@@ -102,6 +100,11 @@ button.new-game:hover {
   transform: scale(1.05);
 }
 
+button#theme-toggle {
+  min-height: 50px;
+  border-radius: 50%;
+}
+
 .score-container {
   position: relative;
 }
@@ -123,6 +126,11 @@ button.new-game:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   min-width: 80%;
   min-height: 100%;
+  align-content: center;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 20px;
 }
 
 #found-words {
@@ -200,6 +208,7 @@ button.new-game:hover {
   text-align: center;
   align-items: center;
   transition: 0.3s;
+  font-size: 20px;
 }
 
 .bubble:hover {
@@ -244,7 +253,8 @@ button.new-game:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
-  gap: 10px;
+  gap: 25px;
+  min-width: 80%;
 }
 
 .controls-container > button {
