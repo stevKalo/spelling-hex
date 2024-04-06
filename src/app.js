@@ -9,7 +9,6 @@ const inputQueue = document.querySelector('#input-queue');
 const deleteBtn = document.querySelector('#delete');
 const shuffleBtn = document.querySelector('#shuffle');
 const submitBtn = document.querySelector('#submit');
-let score = 0;
 const scoreDisplay = document.querySelector('#score-value');
 const messageBox = document.querySelector('.message-box');
 const foundWords = document.querySelector('#found-words');
@@ -57,6 +56,14 @@ function updateFoundWords() {
 
 function toCapitalCase(word) {
   return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+// Score Variable
+let score = 0;
+
+// function to update score on correct answers
+function updateScore() {
+  scoreDisplay.textContent = score.toString();
 }
 
 // HEX ARRAY
@@ -143,9 +150,20 @@ function assignForbidden() {
 // function to give on click functionality to hexes
 function activateHexes() {
   for (let hex of hexes) {
-    hex.shape.addEventListener('click', () => {
-      inputQueue.textContent += hex.shape.textContent;
-    });
+    if (hex.center === true) {
+      hex.shape.addEventListener('click', () => {
+        const cLetter = document.createElement('span');
+        cLetter.classList.add('center-letter');
+        cLetter.textContent = hex.shape.textContent;
+        inputQueue.appendChild(cLetter);
+      });
+    } else {
+      hex.shape.addEventListener('click', () => {
+        const letter = document.createElement('span');
+        letter.textContent = hex.shape.textContent;
+        inputQueue.appendChild(letter);
+      });
+    }
   }
 }
 
@@ -168,14 +186,13 @@ function buildDictionary() {
 
 // functino to clear game objs for rebuild
 function clearGame() {
+  score = 0;
+  updateScore();
   forbiddenArray = [];
+  updateFoundWords();
   letterArray = [];
   wordsArray = [];
-}
-
-// function to update score on correct answers
-function updateScore() {
-  scoreDisplay.textContent = score.toString();
+  foundArray = [];
 }
 
 function printMessage(message) {
@@ -205,21 +222,20 @@ function buildGame(num) {
 window.onload = () => {
   activateHexes();
   buildGame(80);
-  console.log(wordsArray);
+  console.log('Words:', wordsArray);
 };
 
 // BUTTON EVENT LISTENERS
 newGameBtn.addEventListener('click', () => {
   clearGame();
   buildGame(80);
-  console.log(wordsArray);
+  console.log('Words:', wordsArray);
 });
 
 deleteBtn.addEventListener('click', () => {
-  inputQueue.textContent = inputQueue.textContent.slice(
-    0,
-    inputQueue.textContent.length - 1
-  );
+  if (inputQueue.firstChild) {
+    inputQueue.removeChild(inputQueue.lastChild);
+  }
 });
 
 shuffleBtn.addEventListener('click', () => {
@@ -244,38 +260,29 @@ shuffleBtn.addEventListener('click', () => {
 
 submitBtn.addEventListener('click', () => {
   const input = inputQueue.textContent;
+  if (input.length === 0) {
+    return;
+  }
   if (wordsArray.includes(input) && !foundArray.includes(input)) {
-    // // if input has all of letters in lettersArray
-    // if ('crazy thing') {
-    //   console.log('Septagram');
-    //   printMessage('Septagram!');
-    // }
-    console.log('Correct!');
     printMessage('Correct!');
     if (input.length === 4) {
       score += 1;
     } else {
       score += input.length;
     }
-    console.log('Before', foundArray);
     foundArray.unshift(toCapitalCase(input));
-    console.log('After', foundArray);
 
     updateFoundWords();
     updateScore();
   } else if (foundArray.includes(input)) {
-    console.log('Already Found!');
     printMessage('Already Found!');
   } else {
     if (input.length < 4) {
       printMessage('Too Short!');
-      console.log('Too Short');
     } else if (!input.includes(centerLetter)) {
       printMessage(`You forgot ${centerLetter}!`);
-      console.log(`You forgot ${centerLetter}!`);
     } else {
       printMessage('Not on the List!');
-      console.log('Not on the list');
     }
   }
   inputQueue.textContent = '';
@@ -284,7 +291,7 @@ submitBtn.addEventListener('click', () => {
 themeToggle.addEventListener('click', () => {
   const orange = '#fea635';
   const light = '#fffbff';
-  const dark = '#554f3a';
+  const dark = '#1b1612';
   const root = document.querySelector(':root');
   const rootStyles = getComputedStyle(root);
 
