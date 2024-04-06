@@ -1,4 +1,3 @@
-import { length } from 'file-loader';
 import './styles.css';
 const words = require('./wordsArray.js');
 
