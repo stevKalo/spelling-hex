@@ -16,8 +16,6 @@ Built using vanilla JavaScript and a Wordlist
   - Should have functinoality to show all previous words
   - Should offer to pull definition from Webster Dictionary API
 - Getting Spangram or Septagram should award addiontal points
-- Center letter should be orange in input queue
-- New Game should clear found word list and array
 
 \*\* Rankings explained:
 
