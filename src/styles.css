@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
 }
 
@@ -208,7 +208,8 @@ button#theme-toggle {
   width: 75px;
   height: 75px;
   border-radius: 50%;
-  border: var(--accent) 2px solid;
+  border: #1b1612 2px solid;
+  color: #1b1612;
   background-color: var(--primary);
   display: grid;
   text-align: center;
@@ -267,6 +268,7 @@ button#theme-toggle {
   background-color: var(--primary);
   padding: 5px 10px;
   border-radius: 20px;
+  color: #1b1612;
   border-color: var(--accent);
   transition: 0.3s;
 }
